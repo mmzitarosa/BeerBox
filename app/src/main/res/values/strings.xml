@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BeerBox</string>
+    <string name="beer_logo">Beer</string>
+    <string name="box_logo">Box</string>
 </resources>
