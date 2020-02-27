@@ -3,11 +3,14 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/colorDarkText</item>
         <item name="android:windowBackground">@color/colorDarkBackground</item>
         <item name="colorPrimaryDark">@color/colorDarkStatusBar</item>
         <item name="android:navigationBarColor">@color/colorDarkStatusBar</item>
     </style>
 
+    <style name="beer_description">
+        <item name="android:textColor">@color/colorDarkTextSecond</item>
+    </style>
 
 </resources>

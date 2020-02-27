@@ -1,5 +1,8 @@
 package it.mmzitarosa.beerbox.util;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,4 +28,9 @@ public class Util {
         return result.toString(StandardCharsets.UTF_8.name());
     }
 
+    public static Bitmap inputStreamToBitmap(InputStream inputStream) {
+        if (inputStream == null)
+            return null;
+        return BitmapFactory.decodeStream(inputStream);
+    }
 }

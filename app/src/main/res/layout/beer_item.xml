@@ -2,45 +2,65 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    style="@style/beer_item"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/beer_image"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/beer_image_box"
+        android:layout_width="50dp"
         android:layout_height="0dp"
+        android:paddingEnd="@dimen/def_margin_X2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/beer_info"
+        app:layout_constraintTop_toTopOf="@id/beer_info">
+
+        <ImageView
+            android:id="@+id/beer_image"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:src="@drawable/beer_example"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/beer_info"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/beer_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/beer_image_box"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/beer_title"
+            style="@style/beer_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Buzz"
             app:layout_constraintBottom_toTopOf="@id/beer_tagline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/beer_tagline"
+            style="@style/beer_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="A Real Bitter Experience."
             app:layout_constraintBottom_toTopOf="@id/beer_description"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/beer_title" />
 
         <TextView
             android:id="@+id/beer_description"
+            style="@style/beer_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="A light, crisp and bitter IPA brewed with English and American hops. A small batch brewed only once."
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Ocean Fermented Lager"
             app:layout_constraintBottom_toTopOf="@id/beer_more_info"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/beer_tagline" />

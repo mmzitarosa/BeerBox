@@ -1,12 +1,14 @@
 package it.mmzitarosa.beerbox;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,27 +25,47 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int MY_INTERNET_PERMISSION = 777;
 
+    private Context context;
     private RecyclerView recyclerView;
     private PunkapiNetwork punkapiNetwork;
 
-    private void load() {
-        requestForPermissions();
-        punkapiNetwork = new PunkapiNetwork(MainActivity.this);
-        recyclerView = (RecyclerView) findViewById(R.id.main_beers_list);
-        loadRecylerView();
-    }
-
     private void requestForPermissions() {
-        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.INTERNET}, MY_INTERNET_PERMISSION);
         }
     }
 
-    private void loadRecylerView() {
+    private void loadViews() {
+        recyclerView = (RecyclerView) findViewById(R.id.main_beers_list);
+        configureRecyclerView();
+    }
+
+    private void configureRecyclerView() {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager beerLayoutManager = new LinearLayoutManager(MainActivity.this);
         recyclerView.setLayoutManager(beerLayoutManager);
-        RecyclerView.Adapter beerAdapter = new BeerAdapter();
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+
+    }
+
+    private void requestBeersAndFillList() {
+        punkapiNetwork.getAllBeers(new BeerBoxCallback() {
+            @Override
+            public void onSuccess(Object object) {
+                List<BeersItem> beers = (List<BeersItem>) object;
+                fillRecyclerView(beers);
+            }
+
+            @Override
+            public void onError(String response) {
+                //TODO to manage
+                Logger.e(response);
+            }
+        });
+    }
+
+    private void fillRecyclerView(List<BeersItem> beers) {
+        BeerAdapter beerAdapter = new BeerAdapter(beers);
         recyclerView.setAdapter(beerAdapter);
     }
 
@@ -52,24 +74,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        load();
+        context = MainActivity.this;
 
-        punkapiNetwork.getAllBeers(new BeerBoxCallback() {
-            @Override
-            public void onSuccess(Object object) {
-                List<BeersItem> list = (List<BeersItem>) object;
-                for (BeersItem beersItem : list) {
-                    Logger.i(beersItem.getName());
-                }
-            }
+        requestForPermissions();
+        loadViews();
 
-            @Override
-            public void onError(String response) {
-                Logger.e(response);
-            }
-        });
+        punkapiNetwork = new PunkapiNetwork(context);
+
+        requestBeersAndFillList();
 
     }
+
 
 
 }

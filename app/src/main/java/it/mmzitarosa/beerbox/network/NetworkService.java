@@ -9,26 +9,29 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.net.ssl.HttpsURLConnection;
-
+import it.mmzitarosa.beerbox.util.Logger;
 import it.mmzitarosa.beerbox.util.Util;
 
-public class NetworkService extends AsyncTask<Void, String, Pair<Integer, String>> {
+import static it.mmzitarosa.beerbox.network.Network.Content;
+
+public class NetworkService extends AsyncTask<Void, String, Pair<Integer, Object>> {
+
 
     private URL url;
     private String targetUrl;
     private Map<String, String> parameters;
     private BeerBoxCallback beerBoxCallback;
+    private Content content;
 
-    public NetworkService(String url, BeerBoxCallback callback) {
+    public NetworkService(String url, Content content, BeerBoxCallback callback) {
         this.url = null;
         this.targetUrl = url;
         this.parameters = new HashMap<>();
         this.beerBoxCallback = callback;
+        this.content = content;
     }
 
     public NetworkService(String url, Map<String, String> parameters, BeerBoxCallback callback) {
@@ -36,6 +39,7 @@ public class NetworkService extends AsyncTask<Void, String, Pair<Integer, String
         this.targetUrl = url;
         this.parameters = parameters;
         this.beerBoxCallback = callback;
+        this.content = Content.TEXT_STRING;
     }
 
     @Override
@@ -59,41 +63,37 @@ public class NetworkService extends AsyncTask<Void, String, Pair<Integer, String
     }
 
     @Override
-    protected Pair<Integer, String> doInBackground(Void... voids) {
+    protected Pair<Integer, Object> doInBackground(Void... voids) {
         if (url == null)
             return null;
 
-        String response;
+        Object response;
         int status;
         try {
-            InputStream inputStream;
-            URLConnection connection = url.openConnection();
-            switch (url.getProtocol()) {
-                case "https":
-                    ((HttpsURLConnection) connection).setRequestMethod("GET");
-                    status = ((HttpsURLConnection) connection).getResponseCode();
-                    if (status == 200)
-                        inputStream = new BufferedInputStream(connection.getInputStream());
-                    else
-                        inputStream = ((HttpsURLConnection) connection).getErrorStream();
-                    response = Util.inputStreamToString(inputStream);
-                    ((HttpsURLConnection) connection).disconnect();
-                    break;
-                case "http":
-                    ((HttpURLConnection) connection).setRequestMethod("GET");
-                    status = ((HttpURLConnection) connection).getResponseCode();
-                    if (status == 200)
-                        inputStream = new BufferedInputStream(connection.getInputStream());
-                    else
-                        inputStream = ((HttpURLConnection) connection).getErrorStream();
-                    response = Util.inputStreamToString(inputStream);
-                    ((HttpURLConnection) connection).disconnect();
-                    break;
-                default:
-                    beerBoxCallback.onError("URL protocol not yet implemented or not supported.");
-                    return null;
-            }
+            Logger.i("Request to: " + url);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
+            InputStream inputStream;
+            status = connection.getResponseCode();
+            Logger.i("HTTP response status: " + status);
+            if (status == 200)
+                inputStream = new BufferedInputStream(connection.getInputStream());
+            else
+                inputStream = connection.getErrorStream();
+
+            switch (content) {
+                case MEDIA_IMAGE:
+                    Logger.i("Bitmap generation from InputStream...");
+                    response = Util.inputStreamToBitmap(inputStream);
+                    Logger.i("Bitmap generated successfully!");
+                    break;
+                case TEXT_STRING:
+                default:
+                    Logger.i("String generation from InputStream...");
+                    response = Util.inputStreamToString(inputStream);
+                    Logger.i("Bitmap generated successfully: " + response);
+            }
+            connection.disconnect();
             return new Pair<>(status, response);
 
         } catch (IOException e) {
@@ -103,11 +103,11 @@ public class NetworkService extends AsyncTask<Void, String, Pair<Integer, String
     }
 
     @Override
-    protected void onPostExecute(Pair<Integer, String> response) {
+    protected void onPostExecute(Pair<Integer, Object> response) {
         if (url == null || response == null)
             super.onPostExecute(response);
         else if (response.first != 200)
-            beerBoxCallback.onError(response.second);
+            beerBoxCallback.onError((String) response.second);
         else
             beerBoxCallback.onSuccess(response.second);
     }
