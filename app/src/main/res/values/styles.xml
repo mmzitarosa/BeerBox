@@ -1,11 +1,21 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:textColor">@color/colorText</item>
-        <item name="colorPrimaryDark">@color/colorStatusBar</item>
-        <item name="android:navigationBarColor">@color/colorStatusBar</item>
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:textColor">@color/colorDarkText</item>
+        <item name="colorPrimaryDark">@color/colorDarkStatusBar</item>
+        <item name="android:navigationBarColor">@color/colorDarkStatusBar</item>
+        <item name="android:windowBackground">@color/colorDarkBackground</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
         <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/dialog_bg</item>
     </style>
 
     <style name="logo">

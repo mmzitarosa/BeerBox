@@ -1,5 +1,6 @@
 package it.mmzitarosa.beerbox.adapter;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.punkapi.api2pojo.beers.BeersItem;
@@ -15,6 +17,7 @@ import com.punkapi.api2pojo.beers.BeersItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.mmzitarosa.beerbox.InfoBottomSheetDialog;
 import it.mmzitarosa.beerbox.R;
 import it.mmzitarosa.beerbox.network.BeerBoxCallback;
 import it.mmzitarosa.beerbox.network.Network;
@@ -22,10 +25,12 @@ import it.mmzitarosa.beerbox.network.Network;
 public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.BeerViewHolder> {
 
     private List<BeersItem> beers;
+    private Context context;
     private Network network;
     private List<Bitmap> bitmaps;
 
-    public BeerAdapter(List<BeersItem> beers) {
+    public BeerAdapter(List<BeersItem> beers, Context context) {
+        this.context = context;
         this.network = new Network();
         this.beers = beers;
         bitmaps = new ArrayList<>();
@@ -62,6 +67,14 @@ public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.BeerViewHolder
                 }
             });
         }
+
+        holder.moreInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InfoBottomSheetDialog infoBottomSheetDialog = new InfoBottomSheetDialog();
+                infoBottomSheetDialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "examplebottomsheet");
+            }
+        });
     }
 
     @Override

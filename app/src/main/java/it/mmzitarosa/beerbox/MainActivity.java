@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fillRecyclerView(List<BeersItem> beers) {
-        BeerAdapter beerAdapter = new BeerAdapter(beers);
+        BeerAdapter beerAdapter = new BeerAdapter(beers, context);
         recyclerView.setAdapter(beerAdapter);
     }
 
