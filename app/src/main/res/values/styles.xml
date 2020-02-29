@@ -11,37 +11,51 @@
     <style name="logo">
         <item name="android:textSize">@dimen/logo_text_size</item>
         <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="logo_box" parent="logo">
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="link">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/colorOrange</item>
+    <style name="logo.logo_box" parent="logo">
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="beers_recyclerView">
-        <item name="android:layout_marginStart">@dimen/def_margin_X2</item>
+        <item name="android:layout_marginStart">22dp</item>
         <item name="android:scrollbars">vertical</item>
         <item name="android:scrollbarSize">@dimen/zero_margin</item>
         <item name="android:overScrollMode">never</item>
     </style>
 
     <style name="beer_item">
-        <item name="android:paddingTop">@dimen/def_margin_X2</item>
+        <item name="android:paddingTop">20dp</item>
         <item name="android:paddingRight">@dimen/def_margin_X2</item>
-        <item name="android:paddingBottom">@dimen/def_margin_X2</item>
+        <item name="android:paddingBottom">20dp</item>
         <item name="android:paddingLeft">@dimen/zero_margin</item>
     </style>
 
-    <style name="beer_title">
-        <item name="android:textStyle">bold</item>
+    <style name="beer">
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="beer_description">
-        <item name="android:textColor">@color/colorTextSecond</item>
+    <style name="beer_title" parent="beer">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textScaleX">1.05</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="beer_description" parent="beer">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textScaleX">1.05</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/colorDarkTextSecond</item>
+        <item name="android:lineSpacingExtra">1dp</item>
+    </style>
+
+    <style name="beer_more_info" parent="beer">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/colorOrange</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textScaleX">0.965</item>
     </style>
 
 </resources>

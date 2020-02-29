@@ -39,7 +39,7 @@
 
         <TextView
             android:id="@+id/main_box_logo"
-            style="@style/logo_box"
+            style="@style/logo.logo_box"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/box_logo"

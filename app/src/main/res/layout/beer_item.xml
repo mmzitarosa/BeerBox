@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
     style="@style/beer_item"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/beer_image_box"
-        android:layout_width="50dp"
+        android:layout_width="40dp"
         android:layout_height="0dp"
-        android:paddingEnd="@dimen/def_margin_X2"
-        app:layout_constraintStart_toStartOf="parent"
+        android:paddingEnd="16dp"
         app:layout_constraintBottom_toBottomOf="@id/beer_info"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/beer_info">
 
         <ImageView
@@ -19,7 +19,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:src="@drawable/beer_example"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -38,8 +37,8 @@
         <TextView
             android:id="@+id/beer_title"
             style="@style/beer_title"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/beer_tagline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -47,8 +46,8 @@
         <TextView
             android:id="@+id/beer_tagline"
             style="@style/beer_description"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/beer_description"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/beer_title" />
@@ -56,20 +55,22 @@
         <TextView
             android:id="@+id/beer_description"
             style="@style/beer_description"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="12dp"
             android:maxLines="2"
-            android:text="Ocean Fermented Lager"
+            android:ellipsize="end"
+            android:minLines="2"
             app:layout_constraintBottom_toTopOf="@id/beer_more_info"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/beer_tagline" />
 
         <TextView
             android:id="@+id/beer_more_info"
-            style="@style/link"
-            android:layout_width="0dp"
+            style="@style/beer_more_info"
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="4dp"
             android:text="@string/more_info"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
