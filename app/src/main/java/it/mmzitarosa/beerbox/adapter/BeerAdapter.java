@@ -45,7 +45,7 @@ public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.BeerViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final BeerViewHolder holder, final int position) {
-        BeersItem beer = beers.get(position);
+        final BeersItem beer = beers.get(position);
         holder.title.setText(beer.getName());
         holder.tagline.setText(beer.getTagline());
         holder.description.setText(beer.getDescription());
@@ -71,8 +71,8 @@ public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.BeerViewHolder
         holder.moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InfoBottomSheetDialog infoBottomSheetDialog = new InfoBottomSheetDialog();
-                infoBottomSheetDialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "examplebottomsheet");
+                InfoBottomSheetDialog infoBottomSheetDialog = new InfoBottomSheetDialog(beer);
+                infoBottomSheetDialog.show(((AppCompatActivity) context).getSupportFragmentManager(), infoBottomSheetDialog.getTag());
             }
         });
     }

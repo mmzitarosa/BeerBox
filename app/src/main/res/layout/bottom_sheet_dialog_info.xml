@@ -2,16 +2,66 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:paddingStart="0dp"
+    android:paddingTop="10dp"
+    android:paddingEnd="10dp"
+    android:paddingBottom="10dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+
+    <ImageView
+        android:id="@+id/more_info_beer_image"
+        android:layout_width="88dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        app:layout_constraintBottom_toBottomOf="@id/more_info_beer_info"
+        app:layout_constraintEnd_toStartOf="@id/more_info_beer_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/more_info_beer_info" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/more_info_beer_info"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="this is bottom sheet dialog"
-        android:textColor="@android:color/white"
+        android:paddingStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/more_info_beer_image"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/more_info_beer_title"
+            style="@style/beer_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/more_info_beer_tagline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/more_info_beer_tagline"
+            style="@style/beer_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="0.98"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/more_info_beer_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/more_info_beer_title" />
+
+        <TextView
+            android:id="@+id/more_info_beer_description"
+            style="@style/beer_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:lineSpacingExtra="0dp"
+            android:scaleX="1.0"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/more_info_beer_tagline" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

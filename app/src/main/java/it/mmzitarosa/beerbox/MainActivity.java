@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager beerLayoutManager = new LinearLayoutManager(MainActivity.this);
         recyclerView.setLayoutManager(beerLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-
     }
 
     private void requestBeersAndFillList() {
