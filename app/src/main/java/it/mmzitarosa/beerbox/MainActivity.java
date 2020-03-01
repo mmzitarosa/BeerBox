@@ -17,17 +17,19 @@ import com.punkapi.api2pojo.beers.BeersItem;
 import java.util.List;
 
 import it.mmzitarosa.beerbox.adapter.BeerAdapter;
-import it.mmzitarosa.beerbox.network.BeerBoxCallback;
-import it.mmzitarosa.beerbox.network.PunkapiNetwork;
+import it.mmzitarosa.beerbox.util.Beerable;
+import it.mmzitarosa.beerbox.util.Listable;
 import it.mmzitarosa.beerbox.util.Logger;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Listable, Beerable {
 
     private static final int MY_INTERNET_PERMISSION = 777;
 
     private Context context;
     private RecyclerView recyclerView;
-    private PunkapiNetwork punkapiNetwork;
+    private BeerAdapter beerAdapter;
+    private PunkapiController punkapiController;
+
 
     private void requestForPermissions() {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
@@ -45,27 +47,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager beerLayoutManager = new LinearLayoutManager(MainActivity.this);
         recyclerView.setLayoutManager(beerLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-    }
-
-    private void requestBeersAndFillList() {
-        punkapiNetwork.getAllBeers(new BeerBoxCallback() {
-            @Override
-            public void onSuccess(Object object) {
-                List<BeersItem> beers = (List<BeersItem>) object;
-                fillRecyclerView(beers);
-            }
-
-            @Override
-            public void onError(String response) {
-                //TODO to manage
-                Logger.e(response);
-            }
-        });
-    }
-
-    private void fillRecyclerView(List<BeersItem> beers) {
-        BeerAdapter beerAdapter = new BeerAdapter(beers, context);
-        recyclerView.setAdapter(beerAdapter);
+        beerAdapter = null;
     }
 
     @Override
@@ -78,12 +60,38 @@ public class MainActivity extends AppCompatActivity {
         requestForPermissions();
         loadViews();
 
-        punkapiNetwork = new PunkapiNetwork(context);
+        punkapiController = new PunkapiController(context);
 
-        requestBeersAndFillList();
+        punkapiController.getAllBeers();
 
     }
 
+    @Override
+    public void onMoreInfoClick(BeersItem beer) {
+        InfoBottomSheetDialog infoBottomSheetDialog = new InfoBottomSheetDialog(beer);
+        infoBottomSheetDialog.show(((AppCompatActivity) context).getSupportFragmentManager(), infoBottomSheetDialog.getTag());
+    }
 
+    @Override
+    public void fillListView(List<BeersItem> beers) {
+        if (beerAdapter == null) {
+            beerAdapter = new BeerAdapter(beers, context);
+            recyclerView.setAdapter(beerAdapter);
+        } else {
+            beerAdapter.addBeers(beers);
+        }
+    }
 
+    @Override
+    public void onListViewLastItemReached(int lastPage) {
+        punkapiController.getAllBeers(lastPage + 1);
+    }
+
+    @Override
+    public void onListViewError(String message, Exception e) {
+        Logger.e(message);
+        if (e != null) {
+            e.printStackTrace();
+        }
+    }
 }

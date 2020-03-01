@@ -1,4 +1,4 @@
-package it.mmzitarosa.beerbox.network;
+package it.mmzitarosa.beerbox;
 
 import android.content.Context;
 
@@ -12,38 +12,47 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.mmzitarosa.beerbox.R;
+import it.mmzitarosa.beerbox.network.BeerBoxCallback;
+import it.mmzitarosa.beerbox.network.Network;
+import it.mmzitarosa.beerbox.util.Listable;
 
-public class PunkapiNetwork extends Network {
+public class PunkapiController extends Network {
 
     private Context context;
-    private String url;
     private Gson gson;
 
-    public PunkapiNetwork(Context context) {
+    public PunkapiController(Context context) {
         this.context = context;
         this.gson = new Gson();
     }
 
-    public void getAllBeers(final BeerBoxCallback callback) {
-        String getAllBeersUrl = context.getResources().getString(R.string.get_beers_url);
+    public void getAllBeers() {
+        getAllBeers(1);
+    }
+
+    public void getAllBeers(int page) {
+        String getAllBeersUrl = urlSpecificPage(context.getResources().getString(R.string.get_beers_url), page);
 
         getRequest(getAllBeersUrl, new BeerBoxCallback() {
             @Override
             public void onSuccess(Object response) {
                 try {
                     List<BeersItem> beers = jsonToList((String) response, BeersItem.class);
-                    callback.onSuccess(beers);
+                    ((Listable) context).fillListView(beers);
                 } catch (JSONException e) {
-                    callback.onError("Error parsing response.", e);
+                    ((Listable) context).onListViewError("Error parsing response.", e);
                 }
             }
 
             @Override
             public void onError(String error) {
-                callback.onError(error);
+                ((Listable) context).onListViewError(error, null);
             }
         });
+    }
+
+    private String urlSpecificPage(String url, int page) {
+        return url + "?page=" + page;
     }
 
     private <T> T jsonToObject(String response, Class<T> classType) throws JSONException {
