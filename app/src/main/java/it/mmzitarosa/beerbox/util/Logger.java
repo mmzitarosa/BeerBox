@@ -20,10 +20,14 @@ public class Logger {
             Log.e(getTag(DEFAULT), log);
     }
 
-    public static void e(@NonNull String log, @NonNull Exception e) {
+    public static void e(String log, Exception e) {
         if (Util.isLoggable()) {
-            Log.e(getTag(DEFAULT), log + " : " + e.getMessage());
-            e.printStackTrace();
+            if (e != null) {
+                Log.e(getTag(DEFAULT), log + " : " + e.getMessage());
+                e.printStackTrace();
+            } else {
+                Log.e(getTag(DEFAULT), log);
+            }
         }
     }
 

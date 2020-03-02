@@ -1,12 +1,14 @@
 package it.mmzitarosa.beerbox.util;
 
+import androidx.annotation.NonNull;
+
 import com.punkapi.api2pojo.beers.BeersItem;
 
 import java.util.List;
 
 public interface Listable {
 
-    public void fillListView(List<BeersItem> beers);
+    public void fillListView(@NonNull List<BeersItem> beers);
 
     public void onListViewLastItemReached(int lastPage);
 

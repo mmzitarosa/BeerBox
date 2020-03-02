@@ -1,5 +1,6 @@
 package it.mmzitarosa.beerbox;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,21 +15,23 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.punkapi.api2pojo.beers.BeersItem;
 
-import it.mmzitarosa.beerbox.network.BeerBoxCallback;
-import it.mmzitarosa.beerbox.network.Network;
+import it.mmzitarosa.beerbox.network.BitmapNetworkListener;
+import it.mmzitarosa.beerbox.network.PunkApiNetworkController;
 
 public class InfoBottomSheetDialog extends BottomSheetDialogFragment {
 
-    BeersItem beer;
-    Network network;
+    private BeersItem beer;
     private ImageView image;
     private TextView title;
     private TextView tagline;
     private TextView description;
+    private PunkApiNetworkController networkController;
+    private Context context;
 
-    public InfoBottomSheetDialog(BeersItem beer) {
+    public InfoBottomSheetDialog(BeersItem beer, Context context) {
         this.beer = beer;
-        this.network = new Network();
+        this.context = context;
+        this.networkController = new PunkApiNetworkController(context);
     }
 
     @Nullable
@@ -44,24 +47,14 @@ public class InfoBottomSheetDialog extends BottomSheetDialogFragment {
         tagline.setText(beer.getTagline());
         description.setText(beer.getDescription());
 
-        Bitmap bitmap;
-        network.getRequest(beer.getImage_url(), Network.Content.MEDIA_IMAGE, new BeerBoxCallback() {
+        networkController.getBitmapFromUrl(beer.getImage_url(), new BitmapNetworkListener() {
             @Override
-            public void onSuccess(Object object) {
-                image.setImageBitmap((Bitmap) object);
-            }
-
-            @Override
-            public void onError(String response) {
-
+            public void onReady(@NonNull Bitmap bitmap) {
+                image.setImageBitmap(bitmap);
             }
         });
 
         return v;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 }

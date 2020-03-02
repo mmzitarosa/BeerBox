@@ -4,7 +4,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -17,6 +20,7 @@ import com.punkapi.api2pojo.beers.BeersItem;
 import java.util.List;
 
 import it.mmzitarosa.beerbox.adapter.BeerAdapter;
+import it.mmzitarosa.beerbox.network.PunkApiNetworkController;
 import it.mmzitarosa.beerbox.util.Beerable;
 import it.mmzitarosa.beerbox.util.Listable;
 import it.mmzitarosa.beerbox.util.Logger;
@@ -28,8 +32,7 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
     private Context context;
     private RecyclerView recyclerView;
     private BeerAdapter beerAdapter;
-    private PunkapiController punkapiController;
-
+    private PunkApiNetworkController networkController;
 
     private void requestForPermissions() {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
@@ -50,6 +53,10 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
         beerAdapter = null;
     }
 
+    public PunkApiNetworkController getNetworkController() {
+        return networkController;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,20 +67,20 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
         requestForPermissions();
         loadViews();
 
-        punkapiController = new PunkapiController(context);
+        networkController = new PunkApiNetworkController(context);
 
-        punkapiController.getAllBeers();
+        networkController.getAllBeers();
 
     }
 
     @Override
     public void onMoreInfoClick(BeersItem beer) {
-        InfoBottomSheetDialog infoBottomSheetDialog = new InfoBottomSheetDialog(beer);
+        InfoBottomSheetDialog infoBottomSheetDialog = new InfoBottomSheetDialog(beer, context);
         infoBottomSheetDialog.show(((AppCompatActivity) context).getSupportFragmentManager(), infoBottomSheetDialog.getTag());
     }
 
     @Override
-    public void fillListView(List<BeersItem> beers) {
+    public void fillListView(@NonNull List<BeersItem> beers) {
         if (beerAdapter == null) {
             beerAdapter = new BeerAdapter(beers, context);
             recyclerView.setAdapter(beerAdapter);
@@ -83,15 +90,13 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
     }
 
     @Override
-    public void onListViewLastItemReached(int lastPage) {
-        punkapiController.getAllBeers(lastPage + 1);
+    public void onListViewLastItemReached(@NonNull int lastPage) {
+        networkController.getAllBeers(lastPage + 1);
     }
 
     @Override
-    public void onListViewError(String message, Exception e) {
-        Logger.e(message);
-        if (e != null) {
-            e.printStackTrace();
-        }
+    public void onListViewError(String message, @Nullable Exception e) {
+        Logger.e(message, e);
+        Toast.makeText(context, "An error occurred while processing the request.", Toast.LENGTH_SHORT).show();
     }
 }

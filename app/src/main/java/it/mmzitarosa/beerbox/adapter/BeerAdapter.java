@@ -13,12 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.punkapi.api2pojo.beers.BeersItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import it.mmzitarosa.beerbox.MainActivity;
 import it.mmzitarosa.beerbox.R;
-import it.mmzitarosa.beerbox.network.BeerBoxCallback;
-import it.mmzitarosa.beerbox.network.Network;
+import it.mmzitarosa.beerbox.network.BitmapNetworkListener;
 import it.mmzitarosa.beerbox.util.Beerable;
 import it.mmzitarosa.beerbox.util.Listable;
 
@@ -26,16 +25,12 @@ public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.BeerViewHolder
 
     private List<BeersItem> beers;
     private Context context;
-    private Network network;
-    private List<Bitmap> bitmaps;
     private int lastPage;
     private boolean alreadyDone;
 
     public BeerAdapter(List<BeersItem> beers, Context context) {
         this.context = context;
-        this.network = new Network();
         this.beers = beers;
-        bitmaps = new ArrayList<>();
         lastPage = 0;
         alreadyDone = false;
     }
@@ -62,32 +57,17 @@ public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.BeerViewHolder
         holder.tagline.setText(beer.getTagline());
         holder.description.setText(beer.getDescription());
 
-        Bitmap bitmap;
-        if (position < bitmaps.size() && (bitmap = bitmaps.get(position)) != null) {
-            holder.image.setImageBitmap((Bitmap) bitmap);
-        } else {
-            network.getRequest(beer.getImage_url(), Network.Content.MEDIA_IMAGE, new BeerBoxCallback() {
-                @Override
-                public void onSuccess(Object object) {
-                    bitmaps.add(position, (Bitmap) object);
-                    holder.image.setImageBitmap((Bitmap) object);
-                }
-
-                @Override
-                public void onError(String response) {
-
-                }
-            });
-        }
+        ((MainActivity) context).getNetworkController().getBitmapFromUrl(beer.getImage_url(), new BitmapNetworkListener() {
+            @Override
+            public void onReady(@NonNull Bitmap bitmap) {
+                holder.image.setImageBitmap(bitmap);
+            }
+        });
 
         holder.moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    ((Beerable) context).onMoreInfoClick(beer);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                ((Beerable) context).onMoreInfoClick(beer);
             }
         });
 
