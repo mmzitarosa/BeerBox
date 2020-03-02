@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface Listable {
 
-    public void fillListView(@NonNull List<BeersItem> beers);
+    public void fillListView(@NonNull List<BeersItem> beers, boolean clean);
 
     public void onListViewLastItemReached(int lastPage);
 

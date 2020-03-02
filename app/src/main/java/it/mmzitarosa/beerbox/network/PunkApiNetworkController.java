@@ -32,7 +32,7 @@ public class PunkApiNetworkController extends Network {
         getAllBeers(1);
     }
 
-    public void getAllBeers(int page) {
+    public void getAllBeers(final int page) {
         String getAllBeersUrl = context.getResources().getString(R.string.get_beers_url);
 
         Map<String, String> params = new HashMap<>();
@@ -43,7 +43,7 @@ public class PunkApiNetworkController extends Network {
             public void onSuccess(@NonNull Object response) {
                 try {
                     List<BeersItem> beers = Util.jsonToList((String) response, BeersItem.class);
-                    ((Listable) context).fillListView(beers);
+                    ((Listable) context).fillListView(beers, page == 1);
                 } catch (JSONException e) {
                     ((Listable) context).onListViewError("Error parsing response.", e);
                 }
@@ -59,8 +59,10 @@ public class PunkApiNetworkController extends Network {
 
     public void getBitmapFromUrl(@NonNull String url, final BitmapNetworkListener bitmapNetworkListener) {
         String urlSHA1 = Util.SHA1(url);
-        File file = new File(context.getCacheDir(), urlSHA1);
-
+        File file = null;
+        if (urlSHA1 != null) {
+            file = new File(context.getCacheDir(), urlSHA1);
+        }
         getRequest(url, file, new NetworkListener() {
             @Override
             public void onSuccess(@NonNull Object response) {
@@ -75,5 +77,35 @@ public class PunkApiNetworkController extends Network {
 
         });
 
+    }
+
+    public void getSelectedBeers(String string) {
+        getSelectedBeers(string, 1);
+    }
+
+    public void getSelectedBeers(String string, final int page) {
+        String getBeersUrl = context.getResources().getString(R.string.get_beers_url);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("beer_name", string.trim().replace(" ", "_"));
+        params.put("page", String.valueOf(page));
+
+        getRequest(getBeersUrl, params, new NetworkListener() {
+            @Override
+            public void onSuccess(@NonNull Object response) {
+                try {
+                    List<BeersItem> beers = Util.jsonToList((String) response, BeersItem.class);
+                    ((Listable) context).fillListView(beers, page == 1);
+                } catch (JSONException e) {
+                    ((Listable) context).onListViewError("Error parsing response.", e);
+                }
+            }
+
+            @Override
+            public void onError(@Nullable String response, @Nullable Exception e) {
+                ((Listable) context).onListViewError(response, e);
+            }
+
+        });
     }
 }

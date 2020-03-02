@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.punkapi.api2pojo.beers.BeersItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.mmzitarosa.beerbox.MainActivity;
@@ -35,12 +36,21 @@ public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.BeerViewHolder
         alreadyDone = false;
     }
 
-    public void addBeers(List<BeersItem> beers) {
-        this.beers.addAll(beers);
-        lastPage++;
+    public void clean() {
+        beers = new ArrayList<>();
+        lastPage = -1;
         alreadyDone = false;
         notifyDataSetChanged();
+    }
 
+    public void addBeers(List<BeersItem> beers) {
+        //block to avoid unnecessary calls (onListViewLastItemReached)
+        if (!beers.isEmpty()) {
+            this.beers.addAll(beers);
+            lastPage++;
+            alreadyDone = false;
+            notifyDataSetChanged();
+        }
     }
 
     @NonNull

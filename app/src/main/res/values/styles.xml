@@ -2,6 +2,7 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorSecondary">@color/colorOrange</item>
         <item name="android:textColor">@color/colorDarkText</item>
         <item name="colorPrimaryDark">@color/colorDarkStatusBar</item>
         <item name="android:navigationBarColor">@color/colorDarkStatusBar</item>
@@ -30,7 +31,7 @@
 
     <style name="beers_recyclerView">
         <item name="android:layout_marginStart">22dp</item>
-        <item name="android:scrollbars">vertical</item>
+        <item name="android:scrollbars">none</item>
         <item name="android:scrollbarSize">@dimen/zero_margin</item>
         <item name="android:overScrollMode">never</item>
     </style>

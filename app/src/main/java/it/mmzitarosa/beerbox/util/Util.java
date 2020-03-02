@@ -40,7 +40,9 @@ public class Util {
     }
 
     @Nullable
-    public static String SHA1(String string) {
+    public static String SHA1(@Nullable String string) {
+        if (string == null)
+            return null;
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-1");
             digest.update(string.getBytes());
