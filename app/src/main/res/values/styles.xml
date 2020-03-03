@@ -9,6 +9,7 @@
         <item name="android:windowBackground">@color/colorDarkBackground</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
         <item name="android:fontFamily">sans-serif</item>
+        <item name="chipStyle">@style/ChipStyle</item>
     </style>
 
     <style name="AppBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
@@ -19,42 +20,58 @@
         <item name="android:background">@drawable/dialog_bg</item>
     </style>
 
-    <style name="logo">
+    <style name="AppSearchView" parent="Widget.AppCompat.SearchView">
+        <item name="android:textSize">13sp</item>
+        <item name="android:inputType">text</item>
+        <item name="android:background">@drawable/search_bg</item>
+        <item name="android:iconifiedByDefault">false</item>
+        <item name="android:imeOptions">actionSearch</item>
+    </style>
+
+    <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/colorItems</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:checkable">true</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="closeIconVisible">false</item>
+    </style>
+
+    <style name="Logo">
         <item name="android:textSize">@dimen/logo_text_size</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="logo.logo_box" parent="logo">
+    <style name="Logo.LogoBox" parent="Logo">
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
-    <style name="beers_recyclerView">
+    <style name="BeersRecyclerView">
         <item name="android:layout_marginStart">22dp</item>
         <item name="android:scrollbars">none</item>
         <item name="android:scrollbarSize">@dimen/zero_margin</item>
         <item name="android:overScrollMode">never</item>
     </style>
 
-    <style name="beer_item">
+    <style name="BeerItem">
         <item name="android:paddingTop">20dp</item>
         <item name="android:paddingRight">@dimen/def_margin_X2</item>
         <item name="android:paddingBottom">20dp</item>
         <item name="android:paddingLeft">@dimen/zero_margin</item>
     </style>
 
-    <style name="beer">
+    <style name="Beer">
         <item name="android:includeFontPadding">false</item>
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="beer_title" parent="beer">
+    <style name="BeerTitle" parent="Beer">
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textScaleX">1.05</item>
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="beer_description" parent="beer">
+    <style name="BeerDescription" parent="Beer">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textScaleX">1.05</item>
         <item name="android:textSize">13sp</item>
@@ -62,7 +79,7 @@
         <item name="android:lineSpacingExtra">1dp</item>
     </style>
 
-    <style name="beer_more_info" parent="beer">
+    <style name="BeerMoreInfo" parent="Beer">
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">@color/colorOrange</item>
         <item name="android:textSize">14sp</item>

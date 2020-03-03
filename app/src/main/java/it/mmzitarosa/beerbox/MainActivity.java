@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.widget.CompoundButton;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.punkapi.api2pojo.beers.BeersItem;
 
 import java.util.List;
@@ -26,12 +29,13 @@ import it.mmzitarosa.beerbox.util.Beerable;
 import it.mmzitarosa.beerbox.util.Listable;
 import it.mmzitarosa.beerbox.util.Logger;
 
-public class MainActivity extends AppCompatActivity implements Listable, Beerable {
+public class MainActivity extends AppCompatActivity implements Listable, Beerable, CompoundButton.OnCheckedChangeListener {
 
     private static final int MY_INTERNET_PERMISSION = 777;
 
     private RecyclerView recyclerView;
-    private SearchView searchEditText;
+    private SearchView searchView;
+    private ChipGroup chipGroup;
 
     private Context context;
     private BeerAdapter beerAdapter;
@@ -45,10 +49,10 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
 
     private void loadViews() {
         //searchEditText = (EditText) findViewById(R.id.main_search_edit_text);
-        searchEditText = (SearchView) findViewById(R.id.main_search_edit_text);
+        searchView = (SearchView) findViewById(R.id.main_search_edit_text);
+        chipGroup = (ChipGroup) findViewById(R.id.main_chip_group);
+        configureChipGroup();
         recyclerView = (RecyclerView) findViewById(R.id.main_beers_list);
-        //Remove edit text focuse
-        //this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         configureRecyclerView();
     }
 
@@ -59,6 +63,18 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         beerAdapter = null;
     }
+
+    public void configureChipGroup() {
+        String[] categories = {"Blonde", "Lager", "Malts", "Ipa", "Cipolla", "Blonde", "Lager", "Malts", "Ipa", "Cipolla"};
+        for (final String category : categories) {
+            Chip chip = new Chip(context);
+
+            chip.setText(category);
+            chip.setOnCheckedChangeListener((CompoundButton.OnCheckedChangeListener) context);
+            chipGroup.addView(chip);
+        }
+    }
+
 
     public PunkApiNetworkController getNetworkController() {
         return networkController;
@@ -78,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
 
         networkController.getAllBeers();
 
-        searchEditText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -93,44 +109,6 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
                 return false;
             }
         });
-
-        /*((SearchEditText)searchEditText).setOnTextSearchListener(new TextSearchListener() {
-            @Override
-            public void onTextChanged(String searchText) {
-                String beerName;
-                if (!(beerName = searchText).isEmpty())
-                    networkController.getSelectedBeers(beerName);
-                else
-                    networkController.getAllBeers();
-            }
-
-            @Override
-            public void onSearchButton() {
-                Logger.i("onSearchButton");
-            }
-        });*/
-
-        /*searchEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String beerName;
-                if (!(beerName = s.toString()).isEmpty())
-                    networkController.getSelectedBeers(beerName);
-                else
-                    networkController.getAllBeers();
-            }
-        });*/
-
     }
 
     @Override
@@ -155,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
     @Override
     public void onListViewLastItemReached(@NonNull int lastPage) {
         String searchText;
-        if (!(searchText = searchEditText.getQuery().toString()).isEmpty())
+        if (!(searchText = searchView.getQuery().toString()).isEmpty())
             networkController.getSelectedBeers(searchText, lastPage + 1);
         else
             networkController.getAllBeers(lastPage + 1);
@@ -166,4 +144,18 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
         Logger.e(message, e);
         Toast.makeText(context, "An error occurred while processing the request.", Toast.LENGTH_SHORT).show();
     }
+
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            ((Chip) buttonView).setChipBackgroundColorResource(R.color.colorOrange);
+            ((Chip) buttonView).setTextColor(getResources().getColor(R.color.colorText));
+            networkController.getSelectedBeers(buttonView.getText().toString());
+        } else {
+            ((Chip) buttonView).setChipBackgroundColorResource(R.color.colorItems);
+            ((Chip) buttonView).setTextColor(getResources().getColor(R.color.colorDarkText));
+        }
+    }
+
 }
