@@ -23,38 +23,35 @@ import it.mmzitarosa.beerbox.util.Util;
 public class PunkApiNetworkController extends Network {
 
     private Context context;
+    private Map<String, String> params;
 
     public PunkApiNetworkController(Context context) {
         this.context = context;
+        this.params = new HashMap<>();
     }
 
     public void getAllBeers() {
         getAllBeers(1);
     }
 
-    public void getAllBeers(final int page) {
-        String getAllBeersUrl = context.getResources().getString(R.string.get_beers_url);
+    public void getAllBeers(int page) {
+        params.clear();
+        request(page);
+    }
 
-        Map<String, String> params = new HashMap<>();
-        params.put("page", String.valueOf(page));
+    public void getSelectedBeers(String string) {
+        getSelectedBeers(string, 1);
+    }
 
-        getRequest(getAllBeersUrl, params, new NetworkListener() {
-            @Override
-            public void onSuccess(@NonNull Object response) {
-                try {
-                    List<BeersItem> beers = Util.jsonToList((String) response, BeersItem.class);
-                    ((Listable) context).fillListView(beers, page == 1);
-                } catch (JSONException e) {
-                    ((Listable) context).onListViewError("Error parsing response.", e);
-                }
-            }
+    public void getSelectedBeers(String string, int page) {
 
-            @Override
-            public void onError(@Nullable String response, @Nullable Exception e) {
-                ((Listable) context).onListViewError(response, e);
-            }
+        params.put("beer_name", string.trim().replace(" ", "_"));
 
-        });
+        request(page);
+    }
+
+    public void getMoreBeers(int page) {
+        request(page);
     }
 
     public void getBitmapFromUrl(@NonNull String url, final BitmapNetworkListener bitmapNetworkListener) {
@@ -79,17 +76,10 @@ public class PunkApiNetworkController extends Network {
 
     }
 
-    public void getSelectedBeers(String string) {
-        getSelectedBeers(string, 1);
-    }
-
-    public void getSelectedBeers(String string, final int page) {
+    private void request(final int page) {
         String getBeersUrl = context.getResources().getString(R.string.get_beers_url);
 
-        Map<String, String> params = new HashMap<>();
-        params.put("beer_name", string.trim().replace(" ", "_"));
         params.put("page", String.valueOf(page));
-
         getRequest(getBeersUrl, params, new NetworkListener() {
             @Override
             public void onSuccess(@NonNull Object response) {
@@ -105,7 +95,8 @@ public class PunkApiNetworkController extends Network {
             public void onError(@Nullable String response, @Nullable Exception e) {
                 ((Listable) context).onListViewError(response, e);
             }
-
         });
     }
+
+
 }

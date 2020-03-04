@@ -6,7 +6,7 @@ import com.punkapi.api2pojo.beers.BeersItem;
 
 public interface Beerable {
 
-    public void onMoreInfoClick(@NonNull BeersItem beer);
+    void onMoreInfoClick(@NonNull BeersItem beer);
 
 }
 

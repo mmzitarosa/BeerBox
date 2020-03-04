@@ -92,7 +92,7 @@ public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.BeerViewHolder
         return beers.size();
     }
 
-    public static class BeerViewHolder extends RecyclerView.ViewHolder {
+    static class BeerViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView image;
         private TextView title;
@@ -100,7 +100,7 @@ public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.BeerViewHolder
         private TextView description;
         private TextView moreInfo;
 
-        public BeerViewHolder(@NonNull View v) {
+        BeerViewHolder(@NonNull View v) {
             super(v);
             image = v.findViewById(R.id.beer_image);
             title = v.findViewById(R.id.beer_title);

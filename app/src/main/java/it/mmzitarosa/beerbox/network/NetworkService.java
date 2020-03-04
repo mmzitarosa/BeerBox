@@ -33,7 +33,7 @@ public class NetworkService extends AsyncTask<Void, String, Pair<Integer, Object
     private File file;
     private int pid;
 
-    protected NetworkService(@NonNull String url, @NonNull ContentType contentType, @Nullable Map<String, String> parameters, @Nullable File file, @NonNull NetworkListener callback) {
+    NetworkService(@NonNull String url, @NonNull ContentType contentType, @Nullable Map<String, String> parameters, @Nullable File file, @NonNull NetworkListener callback) {
         this.targetUrl = url;
         this.parameters = parameters != null ? parameters : new HashMap<String, String>();
         this.networkListener = callback;

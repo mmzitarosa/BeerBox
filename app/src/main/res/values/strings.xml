@@ -4,4 +4,17 @@
     <string name="box_logo">Box</string>
     <string name="more_info">MORE INFO</string>
     <string name="search">Search</string>
+
+    <string-array name="categories">
+        <item>Blonde</item>
+        <item>Lager</item>
+        <item>Pilsen Lager</item>
+        <item>Scout</item>
+        <item>Weisse</item>
+        <item>Porter</item>
+        <item>Ale</item>
+        <item>Pale Ale</item>
+        <item>India Pale Ale</item>
+    </string-array>
+
 </resources>

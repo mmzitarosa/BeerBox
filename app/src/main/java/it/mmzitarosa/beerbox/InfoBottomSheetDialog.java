@@ -22,15 +22,10 @@ public class InfoBottomSheetDialog extends BottomSheetDialogFragment {
 
     private BeersItem beer;
     private ImageView image;
-    private TextView title;
-    private TextView tagline;
-    private TextView description;
     private PunkApiNetworkController networkController;
-    private Context context;
 
     public InfoBottomSheetDialog(BeersItem beer, Context context) {
         this.beer = beer;
-        this.context = context;
         this.networkController = new PunkApiNetworkController(context);
     }
 
@@ -39,9 +34,9 @@ public class InfoBottomSheetDialog extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.bottom_sheet_dialog_info, container, false);
         image = v.findViewById(R.id.more_info_beer_image);
-        title = v.findViewById(R.id.more_info_beer_title);
-        tagline = v.findViewById(R.id.more_info_beer_tagline);
-        description = v.findViewById(R.id.more_info_beer_description);
+        TextView title = v.findViewById(R.id.more_info_beer_title);
+        TextView tagline = v.findViewById(R.id.more_info_beer_tagline);
+        TextView description = v.findViewById(R.id.more_info_beer_description);
 
         title.setText(beer.getName());
         tagline.setText(beer.getTagline());

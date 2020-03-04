@@ -33,7 +33,8 @@ public class Logger {
 
     public static void e(@NonNull Exception e) {
         if (Util.isLoggable()) {
-            Log.i(getTag(DEFAULT), e.getMessage());
+            if (e.getMessage() != null)
+                Log.i(getTag(DEFAULT), e.getMessage());
             e.printStackTrace();
         }
     }

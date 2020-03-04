@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface Listable {
 
-    public void fillListView(@NonNull List<BeersItem> beers, boolean clean);
+    void fillListView(@NonNull List<BeersItem> beers, boolean clean);
 
-    public void onListViewLastItemReached(int lastPage);
+    void onListViewLastItemReached(int lastPage);
 
-    public void onListViewError(String message, Exception e);
+    void onListViewError(String message, Exception e);
 
 }

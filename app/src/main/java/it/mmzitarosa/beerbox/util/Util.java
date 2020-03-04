@@ -55,7 +55,7 @@ public class Util {
         }
     }
 
-    public static boolean isLoggable() {
+    static boolean isLoggable() {
         return BuildConfig.BUILD_TYPE.equalsIgnoreCase("debug") || BuildConfig.DEBUG;
     }
 
@@ -92,12 +92,11 @@ public class Util {
         return result;
     }
 
-    public static Bitmap inputStreamToBitmap(InputStream inputStream) throws IOException {
+    public static Bitmap inputStreamToBitmap(InputStream inputStream) {
         if (inputStream == null)
             return null;
 
-        Bitmap result = BitmapFactory.decodeStream(inputStream);
-        return result;
+        return BitmapFactory.decodeStream(inputStream);
     }
 
     public static <T> T jsonToObject(String response, Class<T> classType) throws JSONException {
