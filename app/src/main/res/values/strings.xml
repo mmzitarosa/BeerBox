@@ -4,6 +4,8 @@
     <string name="box_logo">Box</string>
     <string name="more_info">MORE INFO</string>
     <string name="search">Search</string>
+    <string name="banner_title">Weekend Offers</string>
+    <string name="banner_subtitle">Free shipping on orders over 60€</string>
 
     <string-array name="categories">
         <item>Blonde</item>

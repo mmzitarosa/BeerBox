@@ -81,6 +81,10 @@ public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.BeerViewHolder
             }
         });
 
+        if (position == 0) {
+            holder.itemView.setPadding(0, 4, 16, 20);
+        }
+
         if (position == beers.size() - 1 && !alreadyDone) {
             alreadyDone = true;
             ((Listable) context).onListViewLastItemReached(lastPage + 1);
