@@ -3,17 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="0dp"
-    android:paddingTop="10dp"
-    android:paddingEnd="10dp"
-    android:paddingBottom="10dp">
+    style="@style/AppBottomSheetDialogStyle">
 
 
     <ImageView
         android:id="@+id/more_info_beer_image"
-        android:layout_width="88dp"
+        style="@style/BottomDialogImage"
         android:layout_height="0dp"
-        android:adjustViewBounds="true"
+        android:layout_width="@dimen/bottom_sheet_dialog_image_max_width"
         app:layout_constraintBottom_toBottomOf="@id/more_info_beer_info"
         app:layout_constraintEnd_toStartOf="@id/more_info_beer_info"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +20,7 @@
         android:id="@+id/more_info_beer_info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
+        style="@style/BottomDialogText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/more_info_beer_image"
@@ -31,34 +28,27 @@
 
         <TextView
             android:id="@+id/more_info_beer_title"
-            style="@style/BeerTitle"
+            style="@style/BeerTitle.Dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/more_info_beer_tagline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/more_info_beer_tagline"
-            style="@style/BeerDescription"
+            style="@style/BeerDescription.Dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleX="0.98"
-            android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@id/more_info_beer_description"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/more_info_beer_title" />
 
         <TextView
             android:id="@+id/more_info_beer_description"
-            style="@style/BeerDescription"
+            style="@style/BeerDescription.Dialog.Multiline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:lineSpacingExtra="0dp"
-            android:scaleX="1.0"
-            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/more_info_beer_tagline" />
 

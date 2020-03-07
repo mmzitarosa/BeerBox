@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">BeerBox</string>
+
+    <integer name="description_lines">2</integer>
+
     <string name="beer_logo">Beer</string>
     <string name="box_logo">Box</string>
     <string name="more_info">MORE INFO</string>

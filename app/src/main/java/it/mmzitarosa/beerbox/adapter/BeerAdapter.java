@@ -82,7 +82,7 @@ public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.BeerViewHolder
         });
 
         if (position == 0) {
-            holder.itemView.setPadding(0, 4, 16, 20);
+            holder.itemView.setPadding(holder.itemView.getPaddingLeft(), (int) context.getResources().getDimension(R.dimen.beer_first_item_padding_top), holder.itemView.getPaddingRight(), holder.itemView.getPaddingBottom());
         }
 
         if (position == beers.size() - 1 && !alreadyDone) {

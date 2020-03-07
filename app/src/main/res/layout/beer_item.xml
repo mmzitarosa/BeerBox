@@ -7,18 +7,18 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/beer_image_box"
-        android:layout_width="40dp"
+        style="@style/BeerImageBox"
         android:layout_height="0dp"
-        android:paddingEnd="16dp"
+        android:layout_width="@dimen/beer_item_image_max_width"
         app:layout_constraintBottom_toBottomOf="@id/beer_info"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/beer_info">
 
         <ImageView
             android:id="@+id/beer_image"
+            style="@style/BeerImage"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -54,13 +54,9 @@
 
         <TextView
             android:id="@+id/beer_description"
-            style="@style/BeerDescription"
+            style="@style/BeerDescription.TwoLines"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_marginTop="12dp"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:minLines="2"
             app:layout_constraintBottom_toTopOf="@id/beer_more_info"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/beer_tagline" />
@@ -70,8 +66,6 @@
             style="@style/BeerMoreInfo"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/more_info"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/beer_description" />
