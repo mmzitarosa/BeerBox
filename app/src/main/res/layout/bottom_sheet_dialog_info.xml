@@ -1,56 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/AppBottomSheetDialogStyle"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    style="@style/AppBottomSheetDialogStyle">
+    android:layout_height="wrap_content">
 
-
-    <ImageView
-        android:id="@+id/more_info_beer_image"
-        style="@style/BottomDialogImage"
-        android:layout_height="0dp"
-        android:layout_width="@dimen/bottom_sheet_dialog_image_max_width"
-        app:layout_constraintBottom_toBottomOf="@id/more_info_beer_info"
-        app:layout_constraintEnd_toStartOf="@id/more_info_beer_info"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/more_info_beer_info" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/more_info_beer_info"
+    <ImageButton
+        android:id="@+id/more_info_bookmark"
+        style="@style/BookmarkCheckbox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/BottomDialogText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/more_info_beer_image"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/more_info_bookmark">
 
-        <TextView
-            android:id="@+id/more_info_beer_title"
-            style="@style/BeerTitle.Dialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/more_info_beer_tagline"
+        <ImageView
+            android:id="@+id/more_info_beer_image"
+            style="@style/BottomDialogImage"
+            android:layout_width="@dimen/bottom_sheet_dialog_image_max_width"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/more_info_beer_info"
+            app:layout_constraintEnd_toStartOf="@id/more_info_beer_info"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/more_info_beer_info" />
 
-        <TextView
-            android:id="@+id/more_info_beer_tagline"
-            style="@style/BeerDescription.Dialog"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/more_info_beer_info"
+            style="@style/BottomDialogText"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/more_info_beer_description"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/more_info_beer_title" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/more_info_beer_image"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/more_info_beer_description"
-            style="@style/BeerDescription.Dialog.Multiline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/more_info_beer_tagline" />
+            <TextView
+                android:id="@+id/more_info_beer_title"
+                style="@style/BeerTitle.Dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/more_info_beer_tagline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/more_info_beer_tagline"
+                style="@style/BeerDescription.Dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/more_info_beer_description"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/more_info_beer_title" />
+
+            <TextView
+                android:id="@+id/more_info_beer_description"
+                style="@style/BeerDescription.Dialog.Multiline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/more_info_beer_tagline" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

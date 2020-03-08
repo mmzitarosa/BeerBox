@@ -22,9 +22,8 @@
 
     <style name="AppBottomSheetDialogStyle">
         <item name="android:paddingStart">@dimen/bottom_sheet_dialog_inner_start_padding</item>
-        <item name="android:paddingTop">@dimen/bottom_sheet_dialog_inner_vertical_padding</item>
         <item name="android:paddingEnd">@dimen/bottom_sheet_dialog_inner_end_padding</item>
-        <item name="android:paddingBottom">@dimen/bottom_sheet_dialog_inner_vertical_padding</item>
+        <item name="android:paddingBottom">@dimen/bottom_sheet_dialog_inner_bottom_padding</item>
     </style>
 
     <style name="BeerTitle.Dialog" parent="BeerTitle">
@@ -193,6 +192,11 @@
 
     <style name="BeerImage">
         <item name="android:adjustViewBounds">true</item>
+    </style>
+
+    <style name="BookmarkCheckbox">
+        <item name="android:background">@drawable/bookmark_selector</item>
+        <item name="android:button">@null</item>
     </style>
 
 </resources>

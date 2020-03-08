@@ -1,11 +1,13 @@
 package it.mmzitarosa.beerbox;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,10 +25,12 @@ public class InfoBottomSheetDialog extends BottomSheetDialogFragment {
     private BeersItem beer;
     private ImageView image;
     private PunkApiNetworkController networkController;
+    private SharedPreferences sharedPreferences;
 
     public InfoBottomSheetDialog(BeersItem beer, Context context) {
         this.beer = beer;
         this.networkController = new PunkApiNetworkController(context);
+        this.sharedPreferences = context.getSharedPreferences("bookmarks", Context.MODE_PRIVATE);
     }
 
     @Nullable
@@ -37,6 +41,7 @@ public class InfoBottomSheetDialog extends BottomSheetDialogFragment {
         TextView title = v.findViewById(R.id.more_info_beer_title);
         TextView tagline = v.findViewById(R.id.more_info_beer_tagline);
         TextView description = v.findViewById(R.id.more_info_beer_description);
+        ImageButton bookmark = v.findViewById(R.id.more_info_bookmark);
 
         title.setText(beer.getName());
         tagline.setText(beer.getTagline());
@@ -46,6 +51,18 @@ public class InfoBottomSheetDialog extends BottomSheetDialogFragment {
             @Override
             public void onReady(@NonNull Bitmap bitmap) {
                 image.setImageBitmap(bitmap);
+            }
+        });
+
+        if (sharedPreferences.getBoolean(String.valueOf(beer.getId()), false)) {
+            bookmark.setActivated(true);
+        }
+
+        bookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setActivated(!v.isActivated());
+                sharedPreferences.edit().putBoolean(String.valueOf(beer.getId()), v.isActivated()).apply();
             }
         });
 

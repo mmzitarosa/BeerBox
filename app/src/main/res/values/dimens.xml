@@ -49,13 +49,14 @@
 
     <dimen name="bottom_sheet_dialog_top_margin">4dp</dimen>
     <dimen name="bottom_sheet_dialog_corner_radius">@dimen/double_base_spacing</dimen>
-    <dimen name="bottom_sheet_dialog_vertical_padding">@dimen/double_base_spacing</dimen>
+    <dimen name="bottom_sheet_dialog_top_padding">0dp</dimen>
+    <dimen name="bottom_sheet_dialog_bottom_padding">@dimen/double_base_spacing</dimen>
     <dimen name="bottom_sheet_dialog_horizontal_padding">@dimen/double_base_spacing</dimen>
     <dimen name="bottom_sheet_dialog_inner_padding">10dp</dimen>
     <dimen name="bottom_sheet_dialog_inner_start_padding">0dp</dimen>
     <dimen name="bottom_sheet_dialog_inner_end_padding">@dimen/bottom_sheet_dialog_inner_padding
     </dimen>
-    <dimen name="bottom_sheet_dialog_inner_vertical_padding">
+    <dimen name="bottom_sheet_dialog_inner_bottom_padding">
         @dimen/bottom_sheet_dialog_inner_padding
     </dimen>
     <dimen name="bottom_sheet_dialog_image_max_width">88dp</dimen>

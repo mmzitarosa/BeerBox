@@ -6,8 +6,8 @@
         android:topLeftRadius="@dimen/bottom_sheet_dialog_corner_radius"
         android:topRightRadius="@dimen/bottom_sheet_dialog_corner_radius" />
     <padding
-        android:bottom="@dimen/bottom_sheet_dialog_vertical_padding"
+        android:bottom="@dimen/bottom_sheet_dialog_bottom_padding"
         android:left="@dimen/bottom_sheet_dialog_horizontal_padding"
         android:right="@dimen/bottom_sheet_dialog_horizontal_padding"
-        android:top="@dimen/bottom_sheet_dialog_vertical_padding" />
+        android:top="@dimen/bottom_sheet_dialog_top_padding" />
 </shape>
