@@ -16,7 +16,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import it.mmzitarosa.beerbox.util.Logger;
 import it.mmzitarosa.beerbox.util.Util;
@@ -31,7 +30,6 @@ public class NetworkService extends AsyncTask<Void, String, Pair<Integer, Object
     private NetworkListener networkListener;
     private ContentType contentType;
     private File file;
-    private int pid;
 
     NetworkService(@NonNull String url, @NonNull ContentType contentType, @Nullable Map<String, String> parameters, @Nullable File file, @NonNull NetworkListener callback) {
         this.targetUrl = url;
@@ -39,43 +37,48 @@ public class NetworkService extends AsyncTask<Void, String, Pair<Integer, Object
         this.networkListener = callback;
         this.contentType = contentType;
         this.file = file;
-        this.pid = new Random().nextInt();
     }
 
     @Override
     protected void onPreExecute() {
         this.url = null;
-
         try {
-            if (contentType == ContentType.MEDIA_IMAGE && file != null && file.exists()) {
-                Util.fileToInputStream(file);
-                Bitmap bitmap = Util.inputStreamToBitmap(Util.fileToInputStream(file));
-                if (bitmap != null) {
-                    Logger.i(pid + ": Bitmap retrieved from file.");
-                    networkListener.onSuccess(bitmap);
-                    return;
+            String url = targetUrl;
+            if (parameters != null && !parameters.isEmpty()) {
+                StringBuilder params = new StringBuilder("?");
+                for (String paramKey : parameters.keySet()) {
+                    params.append("&")
+                            .append(paramKey)
+                            .append("=")
+                            .append(parameters.get(paramKey));
+                }
+                url += params.toString();
+            }
+            try {
+                this.url = new URL(url);
+            } catch (MalformedURLException e) {
+                networkListener.onError("URL not valid error.", e);
+            }
+
+            if (file != null && this.url != null) {
+                String urlSHA1 = Util.SHA1(this.url.toString());
+                if (urlSHA1 != null) {
+                    file = new File(file, urlSHA1);
+                }
+                if (contentType == ContentType.MEDIA_IMAGE && file.exists()) {
+                    Util.fileToInputStream(file);
+                    Bitmap bitmap = Util.inputStreamToBitmap(Util.fileToInputStream(file));
+                    if (bitmap != null) {
+                        Logger.i("Bitmap retrieved from file.");
+                        networkListener.onSuccess(bitmap);
+                        this.url = null;
+                    }
                 }
             }
         } catch (IOException e) {
-            Logger.e(pid + ": File found but not valid. Continue... ", e);
+            Logger.e("File found but not valid. Continue... ", e);
         }
 
-        String url = targetUrl;
-        if (parameters != null && !parameters.isEmpty()) {
-            StringBuilder params = new StringBuilder("?");
-            for (String paramKey : parameters.keySet()) {
-                params.append("&")
-                        .append(paramKey)
-                        .append("=")
-                        .append(parameters.get(paramKey));
-            }
-            url += params.toString();
-        }
-        try {
-            this.url = new URL(url);
-        } catch (MalformedURLException e) {
-            networkListener.onError(pid + ": URL not valid error.", e);
-        }
     }
 
     @Override
@@ -86,7 +89,7 @@ public class NetworkService extends AsyncTask<Void, String, Pair<Integer, Object
         Object response;
         int status;
         try {
-            Logger.i(pid + ": Request to: " + url);
+            Logger.i("Request to: " + url);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             InputStream inputStream;
@@ -99,27 +102,40 @@ public class NetworkService extends AsyncTask<Void, String, Pair<Integer, Object
 
             switch (contentType) {
                 case MEDIA_IMAGE:
-                    Logger.i(pid + ": Bitmap generation from InputStream...");
+                    Logger.i("Bitmap generation from InputStream...");
                     if (file != null) {
-                        Util.inputStreamToFile(inputStream, file);
-                        Logger.i(pid + ": Bitmap saved to file.");
-                        inputStream = Util.fileToInputStream(file);
+                        inputStream = Util.inputStreamToFile(inputStream, file);
+                        Logger.i("Bitmap saved to file.");
                     }
                     response = Util.inputStreamToBitmap(inputStream);
-                    Logger.i(pid + ": Bitmap generated successfully!");
+                    Logger.i("Bitmap generated successfully!");
                     break;
                 case TEXT_STRING:
                 default:
-                    Logger.i(pid + ": String generation from InputStream...");
+                    Logger.i("String generation from InputStream...");
+                    if (file != null) {
+                        inputStream = Util.inputStreamToFile(inputStream, file);
+                        Logger.i("String saved to file.");
+                    }
                     response = Util.inputStreamToString(inputStream);
-                    Logger.i(pid + ": Bitmap generated successfully: " + response);
+                    Logger.i("String generated successfully: " + response);
             }
             connection.disconnect();
             return new Pair<>(status, response);
 
-        } catch (IOException e) {
-            networkListener.onError(pid + ": Error opening connection.", e);
-            return null;
+        } catch (Exception e) {
+            try {
+                if (file != null && file.exists()) {
+                    Logger.i("Try to retrieving string from file...");
+                    response = Util.inputStreamToString(Util.fileToInputStream(file));
+                    Logger.i("String retrieved successfully: " + response);
+                    return new Pair<>(200, response);
+                }
+                throw e;
+            } catch (Exception ex) {
+                networkListener.onError("Error opening connection.", e);
+                return null;
+            }
         }
     }
 

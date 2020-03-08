@@ -59,7 +59,7 @@ public class Util {
         return BuildConfig.BUILD_TYPE.equalsIgnoreCase("debug") || BuildConfig.DEBUG;
     }
 
-    public static void inputStreamToFile(InputStream inputStream, File file) throws IOException {
+    public static InputStream inputStreamToFile(InputStream inputStream, File file) throws IOException {
         byte[] buffer = new byte[1024];
 
         FileOutputStream outputStream = new FileOutputStream(file);
@@ -69,6 +69,8 @@ public class Util {
         }
         outputStream.write(buffer);
         outputStream.close();
+        inputStream = fileToInputStream(file);
+        return inputStream;
     }
 
     public static InputStream fileToInputStream(File file) throws IOException {

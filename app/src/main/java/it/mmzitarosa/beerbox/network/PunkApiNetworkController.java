@@ -10,7 +10,6 @@ import com.punkapi.api2pojo.beers.BeersItem;
 
 import org.json.JSONException;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,12 +54,7 @@ public class PunkApiNetworkController extends Network {
     }
 
     public void getBitmapFromUrl(@NonNull String url, final BitmapNetworkListener bitmapNetworkListener) {
-        String urlSHA1 = Util.SHA1(url);
-        File file = null;
-        if (urlSHA1 != null) {
-            file = new File(context.getCacheDir(), urlSHA1);
-        }
-        getRequest(url, file, new NetworkListener() {
+        getRequest(url, context.getCacheDir(), new NetworkListener() {
             @Override
             public void onSuccess(@NonNull Object response) {
                 bitmapNetworkListener.onReady((Bitmap) response);
@@ -80,7 +74,7 @@ public class PunkApiNetworkController extends Network {
         String getBeersUrl = context.getResources().getString(R.string.get_beers_url);
 
         params.put("page", String.valueOf(page));
-        getRequest(getBeersUrl, params, new NetworkListener() {
+        getRequest(getBeersUrl, params, context.getCacheDir(), new NetworkListener() {
             @Override
             public void onSuccess(@NonNull Object response) {
                 try {

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -186,7 +185,6 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
     @Override
     public void onListViewError(String message, @Nullable Exception e) {
         Logger.e(message, e);
-        Toast.makeText(context, "An error occurred while processing the request.", Toast.LENGTH_SHORT).show();
     }
 
 
