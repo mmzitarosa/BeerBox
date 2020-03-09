@@ -65,7 +65,7 @@
 
     <style name="AppSearchViewTheme" parent="Widget.AppCompat.SearchView">
         <item name="android:textSize">@dimen/search_view_text_size</item>
-        <item name="android:background">@drawable/search_bg</item>
+        <item name="android:background">@drawable/bg_search</item>
         <item name="android:iconifiedByDefault">false</item>
         <item name="android:imeOptions">actionSearch</item>
     </style>
@@ -82,7 +82,7 @@
         <item name="android:layout_marginStart">@dimen/banner_horizontal_margin</item>
         <item name="android:layout_marginEnd">@dimen/banner_horizontal_margin</item>
         <item name="android:layout_marginTop">@dimen/banner_top_margin</item>
-        <item name="android:background">@drawable/banner_bg</item>
+        <item name="android:background">@drawable/bg_banner</item>
     </style>
 
     <style name="AppBannerTextBox">
@@ -201,10 +201,11 @@
 
     <style name="BeerImage">
         <item name="android:adjustViewBounds">true</item>
+        <item name="android:src">@drawable/img_default_beer</item>
     </style>
 
     <style name="BookmarkCheckbox">
-        <item name="android:background">@drawable/bookmark_selector</item>
+        <item name="android:background">@drawable/selector_bookmark</item>
         <item name="android:button">@null</item>
     </style>
 
