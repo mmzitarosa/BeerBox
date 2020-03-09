@@ -1,4 +1,4 @@
-package it.mmzitarosa.beerbox;
+package it.mmzitarosa.beerbox.bottom_sheet_dialog;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.punkapi.api2pojo.beers.BeersItem;
 
+import it.mmzitarosa.beerbox.R;
 import it.mmzitarosa.beerbox.network.BitmapNetworkListener;
 import it.mmzitarosa.beerbox.network.PunkApiNetworkController;
 
@@ -26,6 +27,8 @@ public class InfoBottomSheetDialog extends BottomSheetDialogFragment {
     private ImageView image;
     private PunkApiNetworkController networkController;
     private SharedPreferences sharedPreferences;
+
+    private OnCheckedBookmark onCheckedBookmark;
 
     public InfoBottomSheetDialog(BeersItem beer, Context context) {
         this.beer = beer;
@@ -63,10 +66,17 @@ public class InfoBottomSheetDialog extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 v.setActivated(!v.isActivated());
                 sharedPreferences.edit().putBoolean(String.valueOf(beer.getId()), v.isActivated()).apply();
+                if (onCheckedBookmark != null) {
+                    onCheckedBookmark.onCheched();
+                }
             }
         });
 
         return v;
+    }
+
+    public void setOnCheckedBookmarkListener(OnCheckedBookmark onCheckedBookmarkListener) {
+        this.onCheckedBookmark = onCheckedBookmarkListener;
     }
 
 }

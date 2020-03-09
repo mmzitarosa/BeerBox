@@ -24,6 +24,8 @@ import com.punkapi.api2pojo.beers.BeersItem;
 import java.util.List;
 
 import it.mmzitarosa.beerbox.adapter.BeerAdapter;
+import it.mmzitarosa.beerbox.bottom_sheet_dialog.InfoBottomSheetDialog;
+import it.mmzitarosa.beerbox.bottom_sheet_dialog.OnCheckedBookmark;
 import it.mmzitarosa.beerbox.network.PunkApiNetworkController;
 import it.mmzitarosa.beerbox.util.Beerable;
 import it.mmzitarosa.beerbox.util.Listable;
@@ -87,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
             }
         });
     }
-
 
     private void configureRecyclerView() {
         recyclerView.setHasFixedSize(true);
@@ -169,6 +170,15 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
     public void onMoreInfoClick(@NonNull BeersItem beer) {
         InfoBottomSheetDialog infoBottomSheetDialog = new InfoBottomSheetDialog(beer, context);
         infoBottomSheetDialog.show(((AppCompatActivity) context).getSupportFragmentManager(), infoBottomSheetDialog.getTag());
+        // Refresh favourite beers if check/uncheck current item
+        infoBottomSheetDialog.setOnCheckedBookmarkListener(new OnCheckedBookmark() {
+            @Override
+            public void onCheched() {
+                if (bookmarksChip.isChecked()) {
+                    networkController.getFavouriteBeers();
+                }
+            }
+        });
     }
 
     @Override
