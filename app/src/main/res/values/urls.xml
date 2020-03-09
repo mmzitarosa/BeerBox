@@ -1,3 +1,4 @@
 <resources>
     <string name="get_beers_url">https://api.punkapi.com/v2/beers</string>
+    <string name="get_beer_url">https://api.punkapi.com/v2/beers/</string>
 </resources>

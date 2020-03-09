@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
     private RecyclerView recyclerView;
     private SearchView searchView;
     private ChipGroup chipGroup;
+    private Chip bookmarksChip;
 
     private Context context;
     private BeerAdapter beerAdapter;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
         searchView = findViewById(R.id.main_search_edit_text);
         configureSearchView();
         chipGroup = findViewById(R.id.main_chip_group);
+        bookmarksChip = findViewById(R.id.chip_bookmarks);
         configureChipGroup();
         recyclerView = findViewById(R.id.main_beers_list);
         configureRecyclerView();
@@ -97,24 +99,30 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
 
     private void configureChipGroup() {
         String[] categories = getResources().getStringArray(R.array.categories);
+
         CompoundButton.OnCheckedChangeListener changeListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     ((Chip) buttonView).setChipBackgroundColorResource(R.color.colorOrange);
                     buttonView.setTextColor(getResources().getColor(R.color.colorText));
+                    ((Chip) buttonView).setChipIcon(getResources().getDrawable(R.drawable.ic_bookmark_chip_checked));
                 } else {
                     ((Chip) buttonView).setChipBackgroundColorResource(R.color.colorItems);
                     buttonView.setTextColor(getResources().getColor(R.color.colorDarkText));
+                    ((Chip) buttonView).setChipIcon(getResources().getDrawable(R.drawable.ic_bookmark_chip));
                 }
             }
         };
+
+        bookmarksChip.setOnCheckedChangeListener(changeListener);
         for (final String category : categories) {
             Chip chip = new Chip(context);
             chip.setText(category);
             chip.setOnCheckedChangeListener(changeListener);
             chipGroup.addView(chip);
         }
+
         chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
@@ -123,16 +131,15 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
                     return;
                 }
 
-                Chip chip = (Chip) group.getChildAt(checkedId - 1);
-                if (chip == null)
+                if (checkedId == -1) { //Unchecked
                     networkController.getAllBeers();
-                else {
+                } else if (checkedId == bookmarksChip.getId()) { //Show bookmarks
+                    networkController.getFavouriteBeers();
+                    cleanSearchView();
+                } else {
+                    Chip chip = (Chip) group.getChildAt(checkedId);
                     networkController.getSelectedBeers(chip.getText().toString());
-                    if (!searchView.getQuery().toString().isEmpty()) {
-                        ignoreSearch = true;
-                        searchView.clearFocus();
-                        searchView.setQuery("", false);
-                    }
+                    cleanSearchView();
                 }
             }
         });
@@ -187,5 +194,13 @@ public class MainActivity extends AppCompatActivity implements Listable, Beerabl
         Logger.e(message, e);
     }
 
+
+    private void cleanSearchView() {
+        if (!searchView.getQuery().toString().isEmpty()) {
+            ignoreSearch = true;
+            searchView.clearFocus();
+            searchView.setQuery("", false);
+        }
+    }
 
 }
