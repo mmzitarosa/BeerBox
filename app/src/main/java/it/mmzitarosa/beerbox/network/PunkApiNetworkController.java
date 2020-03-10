@@ -11,6 +11,7 @@ import com.punkapi.api2pojo.beers.BeersItem;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +58,10 @@ public class PunkApiNetworkController extends Network {
         SharedPreferences sharedPreferences = context.getSharedPreferences("bookmarks", Context.MODE_PRIVATE);
         Map<String, ?> bookmarks = sharedPreferences.getAll();
         clean = true;
+        if (bookmarks.isEmpty()) {
+            ((Listable) context).fillListView(new ArrayList<BeersItem>(), clean);
+            clean = false;
+        }
         for (String key : bookmarks.keySet()) {
             if (sharedPreferences.getBoolean(key, false)) {
                 requestSingleBeer(key, new NetworkListener() {
